@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d530aa6e3a030eb4794f50f244531d10, type: 3}
+  m_Name: Spades 4
+  m_EditorClassIdentifier: 
+  FaceSprite: {fileID: -1263950724519715293, guid: 3bd1a727c65f43d4caef25c03c8344cf, type: 3}
+  BackSprite: {fileID: -8246103488371625927, guid: 2c01644c46a96c04b8d4216c5a175cfb, type: 3}
+  Suit: 3
+  Rank: 4
