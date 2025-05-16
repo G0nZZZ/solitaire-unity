@@ -1,0 +1,19 @@
+# This .gitignore file should be placed at the root of your Unity project directory
+/Library/
+/Temp/
+/Obj/
+/Build/
+/Logs/
+/MemoryCaptures/
+*.csproj
+*.unityproj
+*.sln
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.mdb
+*.opendb
+*.VC.db
