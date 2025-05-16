@@ -1,48 +1,58 @@
-// Assets/Scripts/Commands/MoveCommand.cs
-
-
+// Assets/Scripts/Commands/MoveCommand.cs  
+using SolitaireGame.Core;  
+using SolitaireGame.UI;  
 using UnityEngine;
 
 namespace SolitaireGame.Commands
 {
     public class MoveCommand : ICommand
     {
-        private readonly Transform _card;
-        private readonly Transform _fromParent;
-        private readonly Transform _toParent;
+        private readonly CardView _view;
+        private readonly CardStack _from;
+        private readonly CardStack _to;
+        private readonly Card _card;
         private readonly int _fromOrder;
         private readonly int _toOrder;
 
-        public MoveCommand(Transform card, Transform fromParent, int fromOrder,
-            Transform toParent, int toOrder)
+        public MoveCommand(
+            CardView view,
+            CardStack fromStack, int fromOrder,
+            CardStack toStack,   int toOrder)
         {
-            _card = card;
-            _fromParent = fromParent;
+            _view      = view;
+            _from      = fromStack;
+            _to        = toStack;
+            _card      = view.Model;
             _fromOrder = fromOrder;
-            _toParent = toParent;
-            _toOrder = toOrder;
+            _toOrder   = toOrder;
         }
 
         public void Execute()
         {
-            // Reparent to target drop zone at child origin
-            _card.SetParent(_toParent, worldPositionStays: false);
-            _card.localPosition = Vector3.zero;
+            _from.Pop();             
+            _to.Push(_card);        
 
-            // Restore sorting order at destination
-            var sr = _card.GetComponent<SpriteRenderer>();
-            if (sr != null)
-                sr.sortingOrder = _toOrder;
+            var t = _view.transform;
+            t.SetParent(_to.StackOriginTransform, false);
+            t.localPosition = Vector3.zero;
+            _view.CurrentStack = _to;
+
+            var sr = t.GetComponent<SpriteRenderer>();
+            if (sr != null) sr.sortingOrder = _toOrder;
         }
 
         public void Undo()
         {
-            var sr = _card.GetComponent<SpriteRenderer>();
-            if (sr != null)
-                sr.sortingOrder = _fromOrder;   
+            _to.Pop();              
+            _from.Push(_card);      
 
-            _card.SetParent(_fromParent, worldPositionStays: false);
-            _card.localPosition = Vector3.zero;
+            var t = _view.transform;
+            t.SetParent(_from.StackOriginTransform, false);
+            t.localPosition = Vector3.zero;
+            _view.CurrentStack = _from;
+
+            var sr = t.GetComponent<SpriteRenderer>();
+            if (sr != null) sr.sortingOrder = _fromOrder;
         }
     }
 }

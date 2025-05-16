@@ -17,8 +17,7 @@ namespace SolitaireGame.Infrastructure
         public event Action<bool, bool> OnStateChanged;
 
         
-        public void Execute(ICommand cmd)
-        {
+        public void Execute(ICommand cmd) {
             cmd.Execute();
             _undo.Push(cmd);
             _redo.Clear();

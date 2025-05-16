@@ -678,6 +678,12 @@ MonoBehaviour:
   - {fileID: 11400000, guid: ed450d7c1d1d7d54f89f6cd61fc9f670, type: 2}
   - {fileID: 11400000, guid: 6d5485132d93bdc469f5fa32b102232a, type: 2}
   _initialStackParent: {fileID: 2065076483}
+  _dropZoneArray:
+  - {fileID: 1006008782}
+  - {fileID: 194965872}
+  - {fileID: 1191726493}
+  - {fileID: 33875023}
+  - {fileID: 1118838943}
 --- !u!114 &476117026
 MonoBehaviour:
   m_ObjectHideFlags: 0
