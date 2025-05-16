@@ -1,0 +1,72 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    name: Unity Build & Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Cache Library folders
+        uses: actions/cache@v3
+        with:
+          path: |
+            Library
+            Temp
+          key: ${{ runner.os }}-unity-${{ hashFiles('**/ProjectSettings/ProjectVersion.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-unity-
+
+      - name: Set up Java (required by Unity)
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'adopt'
+          java-version: '11'
+
+      - name: Install Unity
+        uses: game-ci/unity-builder@v2
+        with:
+          unityVersion: 2021.3.0f1   # ajusta a la versión de Unity que uses
+
+      - name: Run Edit Mode Tests
+        run: |
+          /opt/unity/Editor/Unity \
+            -batchmode \
+            -projectPath . \
+            -runTests \
+            -testPlatform EditMode \
+            -logFile EditorTests.log \
+            -quit
+        continue-on-error: false
+
+      - name: Run Play Mode Tests
+        run: |
+          /opt/unity/Editor/Unity \
+            -batchmode \
+            -projectPath . \
+            -runTests \
+            -testPlatform PlayMode \
+            -logFile PlayTests.log \
+            -quit
+        continue-on-error: false
+
+      - name: Build Standalone (Linux)
+        run: |
+          /opt/unity/Editor/Unity \
+            -batchmode \
+            -projectPath . \
+            -buildLinux64Player Build/Linux/Solitaire.x86_64 \
+            -quit
+
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: solitaire-build
+          path: Build/Linux/
